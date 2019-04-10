@@ -19,14 +19,14 @@ import javax.sound.sampled.*;
 
 public class userApplication {
 	
-	private static int portNumber			= 13;
+	private static int portNumber			= 26;
 	private static int clientPort 			= 48000 + portNumber;
 	private static int serverPort 			= 38000 + portNumber;
-	private static String echoCode 			= "E4274";
-	private static String imageCode 		= "M8866";
-	private static String soundCode 		= "A4302"; 
-	private static String ithakiCopterCode 	= "Q4806";
-	private static String obdVehicleCode 	= "V8252";
+	private static String echoCode 			= "E6468";
+	private static String imageCode 		= "M8225";
+	private static String soundCode 		= "A1446"; 
+	private static String ithakiCopterCode 	= "Q9826";
+	private static String obdVehicleCode 	= "V3762";
 	private static byte[] hostIP 			= { (byte) 155, (byte) 207, 18, (byte) 208 };
 	private static InetAddress hostAddress;
 	private static Scanner input;
@@ -181,13 +181,13 @@ public class userApplication {
 				/* 4. Virtual Frequency Generator Packet Transmission */
 				case 4: {
 
-					soundDPCM( 0 );
+					soundVFG( );
 					break;
 				}				
 				/* 5. DPCM Sound Packet Transmission */
 				case 5: {
 
-					soundDPCM( 1 );
+					soundDPCM( );
 					break;
 				}
 				/* 6. AQDPCM Sound Packet Transmission */
@@ -689,99 +689,11 @@ public class userApplication {
 		
 	}
 
-
 	/* 4. Receive Virtual Frequency Generator Packets Function */
-	/* 5. Receive DPCM Sound Clip Function */
-	public static void soundDPCM( int mode ) throws IOException, LineUnavailableException {
+	public static void soundVFG( ) throws IOException, LineUnavailableException {
 
-		String soundCodeDPCM = soundCode;
-
-		PrintWriter samples;
-		PrintWriter samplesDiffs;
-
-		if ( mode == 0 ) {
-		// mode == 0, so Virtual Frequency Generator Packets are requested
-
-			soundCodeDPCM += "T999";
-
-			samples 	 = new PrintWriter( "../out/4. Virtual Frequency Generator/Frequencies.txt" );
-			samplesDiffs = new PrintWriter( "../out/4. Virtual Frequency Generator/FrequenciesDiffs.txt" );
-
-		} else {
-		// mode == 1, so DPCM Sound Clip is requested
-			
-			int pressedKey;
-
-			for ( ;; ) {
-				
-				System.out.println(
-				  		  " __________________________________________________________________\n"
-						+ " |                                                                |\n"
-						+ " |  T R A C K   N U M B E R   S E L E C T I O N :                 |\n"
-				  		+ " |________________________________________________________________|\n"
-						+ " |                                                                |\n"
-						+ " | Type in a two digit decimal number [0-99]                      |\n"
-						+ " |________________________________________________________________|\n\n"	);
-
-				input = new Scanner( System.in );
-				pressedKey = input.nextInt();
-
-				if ( (pressedKey < 0) || (pressedKey > 99) ) {
-					
-					System.out.println(
-					  		  " __________________________________________________________________\n"
-							+ " |                                                                |\n"
-							+ " |  Number out of bounds.                                         |\n"
-							+ " |  Please type in a two digit decimal number [0-99]              |\n"
-					  		+ " |________________________________________________________________|\n\n" );		
-				} else {
-
-					break;
-				}
-			}
-
-			int selectQ;
-
-			for ( ;; ) {
-				
-				System.out.println(
-				  		  " __________________________________________________________________\n"
-						+ " |                                                                |\n"
-						+ " |  A U D I O  Q U A L I T Y   S E L E C T I O N :                |\n"
-				  		+ " |________________________________________________________________|\n"
-						+ " |                                                                |\n"
-						+ " |  0. Q =  8                                                     |\n"
-						+ " |  1. Q = 16                                                     |\n"
-						+ " |________________________________________________________________|\n\n"	);
-
-				input = new Scanner( System.in );
-				selectQ = input.nextInt();
-
-				if ( (selectQ != 1) && (selectQ != 0) ) {
-					
-					System.out.println(
-					  		  " __________________________________________________________________\n"
-							+ " |                                                                |\n"
-							+ " |  Please choose one of the available options [0-1]              |\n"
-							+ " |  ( Type in only the equivalent number )                        |\n"
-					  		+ " |________________________________________________________________|\n" );		
-				} else {
-
-					break;
-				}
-			}
-			
-			if ( pressedKey < 10 ) 
-				soundCodeDPCM += "L0" + String.valueOf( pressedKey );
-			else
-				soundCodeDPCM += "L" + String.valueOf( pressedKey );
-
-			soundCodeDPCM += "F999";
-
-			samples 	 = new PrintWriter( "../out/5. DPCM Sound/SamplesDPCM.txt" );
-			samplesDiffs = new PrintWriter( "../out/5. DPCM Sound/SamplesDiffsDPCM.txt" );
-		}
-
+		String soundCodeDPCM = soundCode + "T999";
+/*
 		int i 			 = 0;
 		int bpp 		 = 128;
 		int soundPackets = 999;
@@ -793,6 +705,7 @@ public class userApplication {
 		
 		byte[] txbuffer, rxbuffer;
 		
+		PrintWriter freqs = new PrintWriter( "../out/4. Virtual Frequency Generator/Frequencies.txt" );		
 		
 		DatagramSocket s = new DatagramSocket();
 		
@@ -809,22 +722,13 @@ public class userApplication {
 		
 		s.send( p );
 		
-
-		if ( mode == 0 ) {
-
-			System.out.println(
-			  		  " __________________________________________________________________\n"
-					+ " |                                                                |\n"
-					+ " | Receiving Virtual Frequency Generator Packets .....            |\n"	
-					+ " |                                                                |\n"	);
-		} else {
-
-			System.out.println(
-			  		  " __________________________________________________________________\n"
-					+ " |                                                                |\n"
-					+ " | Receiving DPCM Sound Clip .....                                |\n"	
-					+ " |                                                                |\n"	);
-		}
+		System.out.println(
+		  		  " __________________________________________________________________\n"
+				+ " |                                                                |\n"
+				+ " | Receiving Virtual Frequency Generator Packets .....            |\n"	
+				+ " |                                                                |\n"	);
+		
+		// TODO: Complete VFG Function Here
 
 		for( ;; ) {
 
@@ -842,25 +746,13 @@ public class userApplication {
 			}
 		}
 		
-		if ( mode == 0 ) {
-
-			System.out.printf(
-					  " |                                                                |\n"
-					+ " | Finished.... Virtual Frequency Generator Packets Received: %d |\n"
-					+ " |----------------------------------------------------------------|\n"
-					+ " |                                                                |\n"
-					+ " | Processing....                                                 |\n"
-					+ " |                                                                |\n", i );
-		} else {
-
-			System.out.printf(
-					  " |                                                                |\n"
-					+ " | Finished.... Number of DPCM Sound Packets Received: %d        |\n"
-					+ " |----------------------------------------------------------------|\n"
-					+ " |                                                                |\n"
-					+ " | Sound Clip Processing....                                      |\n"
-					+ " |                                                                |\n", i );
-		}
+		System.out.printf(
+				  " |                                                                |\n"
+				+ " | Finished.... Number of DPCM Sound Packets Received: %d        |\n"
+				+ " |----------------------------------------------------------------|\n"
+				+ " |                                                                |\n"
+				+ " | Sound Clip Processing....                                      |\n"
+				+ " |                                                                |\n", i );
 
 
 		AudioFormat linearPCM = new AudioFormat( 8000, 8, 1, true, false );
@@ -894,19 +786,187 @@ public class userApplication {
 		lineOut.write( audioBufferOut, 0, samplesSize );
 		lineOut.stop();
 
-		if ( mode == 0 ) {
+		System.out.println(
+				  " | Finished.... Sound Clip Received                               |\n"
+		  		+ " |________________________________________________________________|\n" );		
+		
+		lineOut.close();
+		s.close();
+		r.close();
+		samples.close();
+		samplesDiffs.close();
+			*/	
+	}
 
+	/* 5. Receive DPCM Sound Clip Function */
+	public static void soundDPCM( ) throws IOException, LineUnavailableException {
+
+		String soundCodeDPCM = soundCode;
+		
+		int pressedKey;
+
+		for ( ;; ) {
+			
 			System.out.println(
-					  " | Finished.... Frequency Generator Packets Processed             |\n"
-			  		+ " |________________________________________________________________|\n" );		
-		} else {
+			  		  " __________________________________________________________________\n"
+					+ " |                                                                |\n"
+					+ " |  T R A C K   N U M B E R   S E L E C T I O N :                 |\n"
+			  		+ " |________________________________________________________________|\n"
+					+ " |                                                                |\n"
+					+ " | Type in a two digit decimal number [0-99]                      |\n"
+					+ " |________________________________________________________________|\n\n"	);
 
+			input = new Scanner( System.in );
+			pressedKey = input.nextInt();
+
+			if ( (pressedKey < 0) || (pressedKey > 99) ) {
+				
+				System.out.println(
+				  		  " __________________________________________________________________\n"
+						+ " |                                                                |\n"
+						+ " |  Number out of bounds.                                         |\n"
+						+ " |  Please type in a two digit decimal number [0-99]              |\n"
+				  		+ " |________________________________________________________________|\n\n" );		
+			} else {
+
+				break;
+			}
+		}
+
+		int selectQ;
+
+		for ( ;; ) {
+			
 			System.out.println(
-					  " | Finished.... Sound Clip Received                               |\n"
-			  		+ " |________________________________________________________________|\n" );		
+			  		  " __________________________________________________________________\n"
+					+ " |                                                                |\n"
+					+ " |  A U D I O  Q U A L I T Y   S E L E C T I O N :                |\n"
+			  		+ " |________________________________________________________________|\n"
+					+ " |                                                                |\n"
+					+ " |  0. Q =  8                                                     |\n"
+					+ " |  1. Q = 16                                                     |\n"
+					+ " |________________________________________________________________|\n\n"	);
 
-		}		
+			input = new Scanner( System.in );
+			selectQ = input.nextInt();
 
+			if ( (selectQ != 1) && (selectQ != 0) ) {
+				
+				System.out.println(
+				  		  " __________________________________________________________________\n"
+						+ " |                                                                |\n"
+						+ " |  Please choose one of the available options [0-1]              |\n"
+						+ " |  ( Type in only the equivalent number )                        |\n"
+				  		+ " |________________________________________________________________|\n" );		
+			} else {
+
+				break;
+			}
+		}
+		
+		if ( pressedKey < 10 ) 
+			soundCodeDPCM += "L0" + String.valueOf( pressedKey );
+		else
+			soundCodeDPCM += "L" + String.valueOf( pressedKey );
+
+		soundCodeDPCM += "F999";
+
+		int i 			 = 0;
+		int bpp 		 = 128;
+		int soundPackets = 999;
+		int samplesSize  = 2 * bpp * soundPackets;
+
+		int[] soundSamples 	 = new int[samplesSize];
+		int[] soundClip 	 = new int[samplesSize];
+		byte[] receivedSound = new byte[bpp * soundPackets];
+		
+		byte[] txbuffer, rxbuffer;
+		
+		PrintWriter samples 	 = new PrintWriter( "../out/5. DPCM Sound/SamplesDPCM.txt" );
+		PrintWriter samplesDiffs = new PrintWriter( "../out/5. DPCM Sound/SamplesDiffsDPCM.txt" );
+		
+		
+		DatagramSocket s = new DatagramSocket();
+		
+		txbuffer = soundCodeDPCM.getBytes();
+		
+		DatagramPacket p = new DatagramPacket( txbuffer, txbuffer.length, hostAddress, serverPort );
+		
+		DatagramSocket r = new DatagramSocket( clientPort );
+		
+		r.setSoTimeout( 7000 );
+		rxbuffer = new byte[bpp];
+		
+		DatagramPacket q = new DatagramPacket( rxbuffer, rxbuffer.length );
+		
+		s.send( p );
+		
+		System.out.println(
+		  		  " __________________________________________________________________\n"
+				+ " |                                                                |\n"
+				+ " | Receiving DPCM Sound Clip .....                                |\n"	
+				+ " |                                                                |\n"	);
+		
+		for( ;; ) {
+
+			try {
+
+				r.receive( q );
+				for(int j = 0; j < bpp; j++)
+					receivedSound[i*bpp + j] = rxbuffer[j];
+				i++;
+
+			} catch ( Exception x ) {
+
+				System.out.println( x );
+				break;
+			}
+		}
+		
+		System.out.printf(
+				  " |                                                                |\n"
+				+ " | Finished.... Number of DPCM Sound Packets Received: %d        |\n"
+				+ " |----------------------------------------------------------------|\n"
+				+ " |                                                                |\n"
+				+ " | Sound Clip Processing....                                      |\n"
+				+ " |                                                                |\n", i );
+
+
+		AudioFormat linearPCM = new AudioFormat( 8000, 8, 1, true, false );
+		SourceDataLine lineOut = AudioSystem.getSourceDataLine( linearPCM );
+		lineOut.open( linearPCM, samplesSize ); 
+		
+		for (i = 0; i < bpp * soundPackets; i++) {
+			int k = (int) receivedSound[i];
+			soundSamples[2*i] 	  = (((k >> 4) & 15) - 8);
+			soundSamples[2*i + 1] = ((k & 15) - 8);
+		}
+		
+		
+		byte[] audioBufferOut = new byte[samplesSize];
+		
+		for (i = 0; i < samplesSize; i++) // i = 1 --> i = 0
+			soundClip[i] = soundSamples[i];
+		
+		audioBufferOut[0] = (byte) (2*soundClip[0]);
+		for(i = 1; i < samplesSize; i++) {
+			soundClip[i] 	  =  2*soundClip[i] + audioBufferOut[i-1];
+			audioBufferOut[i] = (byte) soundClip[i];	
+		}
+		
+		for(i = 0; i < samplesSize; i++){
+			samples.println( audioBufferOut[i] );
+			samplesDiffs.println( soundSamples[i] );
+		}
+		
+		lineOut.start();
+		lineOut.write( audioBufferOut, 0, samplesSize );
+		lineOut.stop();
+
+		System.out.println(
+				  " | Finished.... Sound Clip Received                               |\n"
+		  		+ " |________________________________________________________________|\n" );		
+		
 		lineOut.close();
 		s.close();
 		r.close();
@@ -920,7 +980,7 @@ public class userApplication {
 
 		String soundCodeAQDPCM = soundCode + "AQF999";
 
-		System.out.printf(
+		System.out.println(
 		  		  " __________________________________________________________________\n"
 				+ " |                                                                |\n"
 				+ " | Receiving AQ-DPCM Sound Clip %d .....                           |\n"	
@@ -962,7 +1022,6 @@ public class userApplication {
 		DatagramSocket r = new DatagramSocket( clientPort );
 		
 		r.setSoTimeout( 1000 );
-		
 		rxbuffer = new byte[bpp];
 		
 		DatagramPacket q = new DatagramPacket( rxbuffer, rxbuffer.length );
@@ -1046,7 +1105,7 @@ public class userApplication {
 		lineOut.write( audioBufferOut, 0, audioBufferOut.length );
 		lineOut.stop();
 		
-		System.out.printf(
+		System.out.println(
 				  " | Finished.... Sound Clip %d Received                             |\n"
 		  		+ " |________________________________________________________________|\n", audioClipNumber );	
 
@@ -1073,49 +1132,35 @@ public class userApplication {
 
 		int portNumber = 38048;
 
-		int flightLevel = 175;
-		int lMotor 		= 150;
-		int rMotor 		= 150;
-
-		for(int i = 0; i < 2; i++) {
-
-			String folderPath	= "../out/7. Ithaki Copter/";
-			String fileName 	= "copter" + String.valueOf( flightLevel ) + ".txt";
-			PrintWriter copter 	= new PrintWriter( folderPath + fileName );
-			
-			Socket s = new Socket( hostAddress, portNumber );
-			
-			s.setSoTimeout( 1000 );
-			
-			InputStream in 	 = s.getInputStream();
-			OutputStream out = s.getOutputStream();
-			
-			startTime = System.currentTimeMillis();
-	        /* Receive Duration = 2 * 60 * 1000 = 120.000 ms = 2 minutes */		
-			while(System.currentTimeMillis() - startTime <= 120000) {
-
-				try {
-					String autopilot = "AUTO FLIGHTLEVEL=" + String.valueOf( flightLevel ) + " LMOTOR=" + String.valueOf( lMotor ) + " RMOTOR=" + String.valueOf( rMotor ) + " PILOT \r\n";
-					out.write( autopilot.getBytes() );
-					int k = in.read();
-					System.out.println( (char) k );
-					copter.println( (char) k );
-
-				} catch( Exception x ) {
-
-					System.out.println( x );
-					break;
-				}
-			}
-			
-			s.close();
-			copter.close();
+		PrintWriter copter = new PrintWriter( "../out/7. Ithaki Copter/copter.txt" );
 		
-			flightLevel += 50;
-			lMotor 		+= 50;
-			rMotor 		+= 50;
-		}
+		Socket s = new Socket( hostAddress, portNumber );
+		
+		s.setSoTimeout( 1000 );
+		
+		InputStream in 	 = s.getInputStream();
+		OutputStream out = s.getOutputStream();
+		
+		startTime = System.currentTimeMillis();
+        /* Receive Duration = 2 * 60 * 1000 = 120.000 ms = 2 minutes */		
+		while(System.currentTimeMillis() - startTime <= 120000) {
 
+			try {
+				out.write( "AUTO FLIGHTLEVEL=150 LMOTOR=125 RMOTOR=125 PILOT \r\n".getBytes() );
+				int k = in.read();
+				System.out.print( (char) k );
+				copter.print( (char) k );
+
+			} catch( Exception x ) {
+
+				System.out.println( x );
+				break;
+			}
+		}
+		
+		s.close();
+		copter.close();
+		
 		System.out.println(
 				  " | Finished.... Ithaki Copter Telemetry Packets Received          |\n"
 		  		+ " |________________________________________________________________|\n" );		
@@ -1127,186 +1172,137 @@ public class userApplication {
 		
     	long startTime;
 		int portNumber = 29078;
+		
+		PrintWriter engineRunTimeFile;
+		PrintWriter intakeAirPressureFile;
+		PrintWriter throttlePositionFile;
+		PrintWriter rpmFile;
+		PrintWriter speedFile;
+		PrintWriter carTemperatureFile;
 
 		String folderPath = "../out/8. OBD-II/";
 		String obdCode = "01 11\r";
-
-		PrintWriter engineRunTimeFile 		= new PrintWriter( folderPath + "EngineRunTime.txt" );
-		PrintWriter intakeAirPressureFile 	= new PrintWriter( folderPath + "1. IntakeAirPressure.txt" );
-		PrintWriter throttlePositionFile	= new PrintWriter( folderPath + "2. ThrottlePosition.txt" );
-		PrintWriter rpmFile					= new PrintWriter( folderPath + "3. RPM.txt" );
-		PrintWriter speedFile				= new PrintWriter( folderPath + "4. Speed.txt" );
-		PrintWriter carTemperatureFile		= new PrintWriter( folderPath + "5. CarTemperature.txt");
-
 		
-	        
-	        
-		System.out.println(
-		  		  " __________________________________________________________________\n"
-				+ " |                                                                |\n"
-				+ " | Receiving OBD-II Packets .....                                 |\n"	
-				+ " |                                                                |\n"	);
-
-		Socket send = new Socket( hostAddress, portNumber );
-		
-		send.setSoTimeout( 1000 );
-
-        startTime = System.currentTimeMillis();
-
-		InputStream in 	 = send.getInputStream();
-		OutputStream out = send.getOutputStream();
-		
-		int k;
-
 		for( ;; ) {
 
-        	/* Engine Run Time */
-			obdCode = "01 1F\r";
+			Socket send = new Socket( hostAddress, portNumber );
+			
+			send.setSoTimeout( 1000 );
 
-			try {
+			InputStream in 	 = send.getInputStream();
+			OutputStream out = send.getOutputStream();
+			
+			System.out.println(
+					  " __________________________________________________________________\n"
+					+ " |                                                                |\n"
+					+ " |  V E H I C L E   O B D - II   O P T I O N S   T A B L E :      |\n"
+					+ " |________________________________________________________________|\n"
+					+ " |                                                                |\n"
+					+ " | 1. Engine Run Time.                                            |\n"
+					+ " | 2. Intake Air Temperature.                                     |\n"
+					+ " | 3. Throttle Position.                                          |\n"
+					+ " | 4. Engine RPM.                                                 |\n"
+					+ " | 5. Vehicle Speed.                                              |\n"
+					+ " | 7. Coolant Temperature.                                        |\n"
+					+ " | -. ANY OTHER KEY RETURNS BACK TO THE MAIN APPLICATION MENU     |\n"
+					+ " |________________________________________________________________|\n"
+					+ "\n Select one of the available options by pressing the mapped key: " 	);
+			                
+	        
+	        input = new Scanner( System.in );
+			int pressedKey = input.nextInt();
+	      
+	        switch( pressedKey ) {
 
-				out.write( obdCode.getBytes() );
-				k = in.read();
-				System.out.println( (char) k );
+	        	/* 1. Engine Run Time */
+			 	case 1: {
 
-				engineRunTimeFile.println( (char) k );
-			    
-			    if ( System.currentTimeMillis() - startTime <= 240000 ){ 
-		        // Receive Duration = 4 * 60 * 1000 = 240.000 ms = 4 minutes
-
-			        /* 1. Intake Air Temperature */
-					obdCode = "01 0F\r";
-
-					for( ;; ) {
-						try {
-
-							out.write( obdCode.getBytes() );
-							k = in.read();
-							System.out.println( (char) k );
-
-							intakeAirPressureFile.println( (char) k );
-							
-							break;
-
-						} catch( Exception x ) {
-
-							System.out.println( x );
-							break;
-						}
-					}
-
-			        /* 2. Throttle Position */
-					obdCode = "01 11\r";
-
-					for( ;; ) {					
-						try {
-
-							out.write( obdCode.getBytes() );
-							k = in.read();
-							System.out.println( (char) k );
-
-							throttlePositionFile.println( (char) k );
-
-							break;
-							
-						} catch( Exception x ) {
-
-							System.out.println( x );
-							break;
-						}
-					}
-
-					/* 3. Engine RPM */
-					obdCode = "01 0C\r";
-
-					for( ;; ) {					
-						try {
-
-							out.write( obdCode.getBytes() );
-							k = in.read();
-							System.out.println( (char) k );
-
-							rpmFile.println( (char) k );
-
-							break;
-							
-						} catch( Exception x ) {
-
-							System.out.println( x );
-							break;
-						}
-					}
-
-			        /* 4. Vehicle Speed */
-					obdCode = "01 0D\r";
-
-					for( ;; ) {					
-						try {
-
-							out.write( obdCode.getBytes() );
-							k = in.read();
-							System.out.println( (char) k );
-
-							speedFile.println( (char) k );
-
-							break;
-							
-						} catch( Exception x ) {
-
-							System.out.println( x );
-							break;
-						}		
-					}
-
-			        /* 5. Coolant Temperature */
-					obdCode = "01 05\r";
-						
-					for( ;; ) {					
-						try {
-
-							out.write( obdCode.getBytes() );
-							k = in.read();
-							System.out.println( (char) k );
-
-							carTemperatureFile.println( (char) k );
-
-							break;
-							
-						} catch( Exception x ) {
-
-							System.out.println( x );
-							break;
-						}
-					}
-
-				} else {
-		        // Receive Duration = 4 * 60 = 240 secs = 4 minutes has expired so we are done
-
+					engineRunTimeFile = new PrintWriter( folderPath + "1. EngineRunTime.txt" );
+					obdCode = "01 1F\r";
 					break;
+		        } 
+		        /* 2. Intake Air Temperature */
+			 	case 2: {
 
-				} // END of if
-				
-			} catch( Exception x ) {
+					 engineRunTimeFile = new PrintWriter( folderPath + "2. IntakeAirPressure.txt" );
+					 obdCode = "01 0F\r";
+					 break;
+		        } 
+		        /* 3. Throttle Position */
+			 	case 3: {
 
-				System.out.println( x );
-				break;
-			}				
+					 engineRunTimeFile = new PrintWriter( folderPath + "3. ThrottlePosition.txt" );
+					 obdCode = "01 11\r";
+					 break;
+		        } 
+		        /* 4. Engine RPM */
+			 	case 4: {
+
+					 engineRunTimeFile = new PrintWriter( folderPath + "4. RPM.txt" );
+					 obdCode = "01 0C\r";
+					 break;
+		        } 
+		        /* 5. Vehicle Speed */
+			 	case 5: {
+
+					 engineRunTimeFile = new PrintWriter( folderPath + "5. Speed.txt" );
+					 obdCode = "01 0D\r";
+					 break;
+		        } 
+		        /* 6. Coolant Temperature */
+			 	case 6: {
+
+					 engineRunTimeFile = new PrintWriter( folderPath + "6. CarTemperature.txt");
+					 obdCode = "01 05\r";
+					 break;
+		        } 
+				/* If none of the above was selected, RETURN BACK TO MAIN APPLICATION MENU */
+				default: {
+
+					System.out.println(
+					  		  " __________________________________________________________________\n"
+							+ " |                                                                |\n"
+							+ " |  RETURNING BACK TO MAIN APPLICATION MENU                       |\n"
+					  		+ " |________________________________________________________________|\n" );
+			
+					return ;
+		        } 
+	        
+	        } // END of switch
+	        
+			System.out.println(
+			  		  " __________________________________________________________________\n"
+					+ " |                                                                |\n"
+					+ " | Receiving OBD-II Packets .....                                 |\n"	
+					+ " |                                                                |\n"	);
+
+	        startTime = System.currentTimeMillis();
+	        /* Receive Duration = 4 * 60 * 1000 = 240.000 ms = 4 minutes */
+	        while( System.currentTimeMillis() - startTime <= 240000 ) {
+
+				try {
+
+					out.write( obdCode.getBytes() );
+					int k = in.read();
+					System.out.print( (char) k );
+
+					engineRunTimeFile.print( (char) k );
+					
+				} catch( Exception x ) {
+
+					System.out.println( x );
+					break;
+				}
+			}
+		
+			System.out.println(
+					  " | Finished.... OBD-II Packets Received                           |\n"
+			  		+ " |________________________________________________________________|\n" );		
+			
+			engineRunTimeFile.close();
+			send.close();
 				
 		} // END of infinite for loop 
-
-		System.out.println(
-				  " | Finished.... OBD-II Packets Received                           |\n"
-		  		+ " |________________________________________________________________|\n" );		
-		
-
-		engineRunTimeFile.close();
-		intakeAirPressureFile.close();
-		throttlePositionFile.close();
-		rpmFile.close();
-		speedFile.close();
-		carTemperatureFile.close();
-
-		send.close();
-	}
+    }
 
 }
