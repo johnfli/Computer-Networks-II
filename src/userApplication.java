@@ -19,14 +19,14 @@ import javax.sound.sampled.*;
 
 public class userApplication {
 	
-	private static int portNumber			= 19;
+	private static int portNumber			= 25;
 	private static int clientPort 			= 48000 + portNumber;
 	private static int serverPort 			= 38000 + portNumber;
-	private static String echoCode 			= "E9262";
-	private static String imageCode 		= "M1040";
-	private static String soundCode 		= "A0897"; 
-	private static String ithakiCopterCode 	= "Q9582";
-	private static String obdVehicleCode 	= "V6024";
+	private static String echoCode 			= "E3593";
+	private static String imageCode 		= "M9498";
+	private static String soundCode 		= "M9498"; 
+	private static String ithakiCopterCode 	= "Q3760";
+	private static String obdVehicleCode 	= "V0975";
 	private static byte[] hostIP 			= { (byte) 155, (byte) 207, 18, (byte) 208 };
 	private static InetAddress hostAddress;
 	private static Scanner input;
@@ -194,7 +194,7 @@ public class userApplication {
 				case 6: {
 
 					soundAQDPCM( 1 );
-					// soundAQDPCM( 2 );
+					soundAQDPCM( 2 );
 					break;
 				}
 				/* 7. IthakiCopter Telemetry Packet Transmission */
@@ -996,7 +996,7 @@ public class userApplication {
 		soundSamples[0]=0;
 		for(i = 1; i < soundPackets; i++)
 			for(int j = 0; j < 256; j++)
-				soundSamples[i*256 + j] = step[i] * soundDiffs[i*256 + j] + soundSamples[i*256 + j - 1];	// step[i] *
+				soundSamples[i*256 + j] = step[i]/2 * soundDiffs[i*256 + j] + soundSamples[i*256 + j - 1];	// step[i] *
 			
 		for(i = 0; i < 256 * soundPackets; i++){
 			audioBufferOut[2*i] 	= (byte) ( soundSamples[i] & 0x00FF );
@@ -1138,7 +1138,7 @@ public class userApplication {
 		System.out.println( "--------------------" );
 		System.out.println( "Engine Runtime: " + startTime );
 
-		engineRunTimeFile.print( String.valueOf( startTime ) ); 
+		engineRunTimeFile.print( String.valueOf( startTime ) + "\n" ); 
 	
 		for( ;; ) {
 
@@ -1150,17 +1150,17 @@ public class userApplication {
 			
 			System.out.println( "Air Temperature: " + airTemp );
 
-			intakeAirPressureFile.print( String.valueOf( airTemp ) );
+			intakeAirPressureFile.print( String.valueOf( airTemp ) + "\n" );
 
 	        /* 2. Throttle Position */
 	    	SendTCP( out, throttlePositionCode );
 			parsed = ReceiveTCP( in ).split( " " );
 
-			throttlePos = Integer.parseInt( parsed[2], 16 ) * ( 100 / 255 ) ;
+			throttlePos = Integer.parseInt( parsed[2], 16 ) * 100 / 255;
 			
 			System.out.println( "Throttle Position: " + throttlePos );
 
-			throttlePositionFile.print( String.valueOf( throttlePos ) );
+			throttlePositionFile.print( String.valueOf( throttlePos ) + "\n" );
 
 			/* 3. Engine RPM */
 	    	SendTCP( out, rpmCode );
@@ -1170,7 +1170,7 @@ public class userApplication {
 			
 			System.out.println( "Engine RPM: " + rpm );
 
-			rpmFile.print( String.valueOf( rpm ) );
+			rpmFile.print( String.valueOf( rpm ) + "\n" );
 
 	        /* 4. Vehicle Speed */
 	    	SendTCP( out, speedCode );
@@ -1180,7 +1180,7 @@ public class userApplication {
 			
 			System.out.println( "Vehicle Speed: " + speed );
 
-			speedFile.print( String.valueOf( speed ) );
+			speedFile.print( String.valueOf( speed ) + "\n" );
 
 	        /* 5. Coolant Temperature */		
 	    	SendTCP( out, carTemperatureCode );
@@ -1191,7 +1191,7 @@ public class userApplication {
 			System.out.println( "Car Temperature: " + carTemp );
 			System.out.println( "--------------------" );
 
-			carTemperatureFile.print( String.valueOf( carTemp ) );
+			carTemperatureFile.print( String.valueOf( carTemp ) + "\n" );
 
 	    	/* Engine Run Time */
 	    	SendTCP( out, engineRunTimeCode );
@@ -1201,18 +1201,18 @@ public class userApplication {
 			
 			System.out.println( "Engine Runtime: " + currentTime );
 
-			engineRunTimeFile.print( String.valueOf( currentTime - startTime ) ); 
-
 			if ( currentTime - startTime > 240 )
 	        // If the receive duration = 4 * 60 = 240 secs = 4 minutes has expired we are done
 				break;
+
+			engineRunTimeFile.print( String.valueOf( currentTime - startTime ) + "\n" ); 
 
 		} // END of infinite for loop 
 
 		System.out.println(
 				  " | Finished.... OBD-II Packets Received                           |\n"
-		  		+ " |________________________________________________________________|\n" );		
-		
+		  		+ " |________________________________________________________________|\n" );
+
 
 		engineRunTimeFile.close();
 		intakeAirPressureFile.close();
