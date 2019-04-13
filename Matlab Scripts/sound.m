@@ -22,6 +22,7 @@ f1 = figure('Position', get(0, 'Screensize'));
 plot(freqs);
 title({'G9: Virtual Frequency Generator Partial Waveform';'Date: 13-04-2019, Time: 13:06 - 15:06, Audio request code: A9232'});
 xlabel('Number of Packets');
+xlim([1500 2500]);
 
 F = getframe(f1);
 imwrite(F.cdata, 'Plots/G9.png', 'png')
@@ -32,11 +33,13 @@ subplot(2,1,1);
 plot(Sdpcm);
 title('DPCM Partial Waveform');
 xlabel('Number of Packets');
+xlim([1500 2500]);
 
 subplot(2,1,2);
 plot(Saq);
 title('AQ-DPCM Partial Waveform');
 xlabel('Number of Packets');
+xlim([1500 2500]);
 
 sgtitle({'G10: Partial Waveforms';'Date: 13-04-2019, Time: 13:06 - 15:06, Audio request code: A9232'})
 
@@ -91,6 +94,7 @@ fclose(fileID);
 f7 = figure('Position', get(0, 'Screensize'));
 plot(mean);
 title({'G15: Samples Mean Values of Audio Clip 1';'Date: 13-04-2019, Time: 13:06 - 15:06, Audio request code: A9232'});
+xlim([600 800]);
 F = getframe(f7);
 imwrite(F.cdata, 'Plots/G15.png', 'png');
 
@@ -101,6 +105,7 @@ fclose(fileID);
 f8 = figure('Position', get(0, 'Screensize'));
 plot(step);
 title({'G16: Samples Step Values of Audio Clip 1';'Date: 13-04-2019, Time: 13:06 - 15:06, Audio request code: A9232'});
+xlim([600 800]);
 F = getframe(f8);
 imwrite(F.cdata, 'Plots/G16.png', 'png');
 
@@ -113,6 +118,7 @@ fclose(fileID);
 f9 = figure('Position', get(0, 'Screensize'));
 plot(mean);
 title({'G17: Samples Mean Values of Audio Clip 2';'Date: 13-04-2019, Time: 13:06 - 15:06, Audio request code: A9232'});
+xlim([600 800]);
 F = getframe(f9);
 imwrite(F.cdata, 'Plots/G17.png', 'png');
 
@@ -123,6 +129,7 @@ fclose(fileID);
 f10 = figure('Position', get(0, 'Screensize'));
 plot(step);
 title({'G18: Samples Step Values of Audio Clip 2';'Date: 13-04-2019, Time: 13:06 - 15:06, Audio request code: A9232'});
+xlim([600 800]);
 F = getframe(f10);
 imwrite(F.cdata, 'Plots/G18.png', 'png');
 
