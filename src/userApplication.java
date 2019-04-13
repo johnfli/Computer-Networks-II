@@ -19,14 +19,14 @@ import javax.sound.sampled.*;
 
 public class userApplication {
 	
-	private static int portNumber			= 25;
+	private static int portNumber			= 8;
 	private static int clientPort 			= 48000 + portNumber;
 	private static int serverPort 			= 38000 + portNumber;
-	private static String echoCode 			= "E3593";
-	private static String imageCode 		= "M9498";
-	private static String soundCode 		= "M9498"; 
-	private static String ithakiCopterCode 	= "Q3760";
-	private static String obdVehicleCode 	= "V0975";
+	private static String echoCode 			= "E3285";
+	private static String imageCode 		= "M7341";
+	private static String soundCode 		= "A9232"; 
+	private static String ithakiCopterCode 	= "Q8338";
+	private static String obdVehicleCode 	= "V4568";
 	private static byte[] hostIP 			= { (byte) 155, (byte) 207, 18, (byte) 208 };
 	private static InetAddress hostAddress;
 	private static Scanner input;

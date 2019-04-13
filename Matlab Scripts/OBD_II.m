@@ -80,7 +80,7 @@ ylabel('Celsius Degrees (C)')
 xlabel('Time (sec)')
 title('5. Coolant Temperature')
 
-sgtitle({'Vehicle OBD-II Plots';'Date: 12-04-2019, Time: 17:58 - 19:58, Vehicle OBD-II code: V0975'})
+sgtitle({'Vehicle OBD-II Plots';'Date: 13-04-2019, Time: 13:06 - 15:06, Vehicle OBD-II code: V4568'})
 
 F = getframe(f);
 imwrite(F.cdata, 'Plots/G21.png', 'png');
