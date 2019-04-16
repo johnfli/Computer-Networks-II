@@ -20,7 +20,7 @@ fclose(fileID);
 
 f1 = figure('Position', get(0, 'Screensize'));
 plot(freqs);
-title({'G9: Virtual Frequency Generator Partial Waveform';'Date: 13-04-2019, Time: 13:06 - 15:06, Audio request code: A9232'});
+title({'G9: Virtual Frequency Generator Partial Waveform';'Date: 16-04-2019, Time: 09:59 - 11:59, Audio request code: A5209'});
 xlabel('Number of Packets');
 xlim([1500 2500]);
 
@@ -41,7 +41,7 @@ title('AQ-DPCM Partial Waveform');
 xlabel('Number of Packets');
 xlim([1500 2500]);
 
-sgtitle({'G10: Partial Waveforms';'Date: 13-04-2019, Time: 13:06 - 15:06, Audio request code: A9232'})
+sgtitle({'G10: Partial Waveforms';'Date: 16-04-2019, Time: 09:59 - 11:59, Audio request code: A5209'})
 
 F = getframe(f2);
 imwrite(F.cdata, 'Plots/G10.png', 'png')
@@ -60,26 +60,26 @@ fclose(fileID);
 
 f3 = figure('Position', get(0, 'Screensize'));
 histfit(Dif_dpcm);
-title({'G11: DPCM Distribution Differences';'Date: 13-04-2019, Time: 13:06 - 15:06, Audio request code: A9232'});
+title({'G11: DPCM Distribution Differences';'Date: 16-04-2019, Time: 09:59 - 11:59, Audio request code: A5209'});
 F = getframe(f3);
 imwrite(F.cdata, 'Plots/G11.png', 'png');
 
 f4 = figure('Position', get(0, 'Screensize'));
 histfit(Sdpcm);
-title({'G12: DPCM Distribution Values';'Date: 13-04-2019, Time: 13:06 - 15:06, Audio request code: A9232'});
+title({'G12: DPCM Distribution Values';'Date: 16-04-2019, Time: 09:59 - 11:59, Audio request code: A5209'});
 F = getframe(f4);
 imwrite(F.cdata, 'Plots/G12.png', 'png');
 
 
 f5 = figure('Position', get(0, 'Screensize'));
 histfit(Dif_aq);
-title({'G13: AQ-DPCM Distribution Differences';'Date: 13-04-2019, Time: 13:06 - 15:06, Audio request code: A9232'});
+title({'G13: AQ-DPCM Distribution Differences';'Date: 16-04-2019, Time: 09:59 - 11:59, Audio request code: A5209'});
 F = getframe(f5);
 imwrite(F.cdata, 'Plots/G13.png', 'png');
 
 f6 = figure('Position', get(0, 'Screensize'));
 histfit(Saq);
-title({'G14: AQ-DPCM Distribution Values';'Date: 13-04-2019, Time: 13:06 - 15:06, Audio request code: A9232'});
+title({'G14: AQ-DPCM Distribution Values';'Date: 16-04-2019, Time: 09:59 - 11:59, Audio request code: A5209'});
 F = getframe(f6);
 imwrite(F.cdata, 'Plots/G14.png', 'png');
 
@@ -93,7 +93,7 @@ fclose(fileID);
 
 f7 = figure('Position', get(0, 'Screensize'));
 plot(mean);
-title({'G15: Samples Mean Values of Audio Clip 1';'Date: 13-04-2019, Time: 13:06 - 15:06, Audio request code: A9232'});
+title({'G15: Samples Mean Values of Audio Clip 1';'Date: 16-04-2019, Time: 09:59 - 11:59, Audio request code: A5209'});
 xlim([600 800]);
 F = getframe(f7);
 imwrite(F.cdata, 'Plots/G15.png', 'png');
@@ -104,7 +104,7 @@ fclose(fileID);
 
 f8 = figure('Position', get(0, 'Screensize'));
 plot(step);
-title({'G16: Samples Step Values of Audio Clip 1';'Date: 13-04-2019, Time: 13:06 - 15:06, Audio request code: A9232'});
+title({'G16: Samples Step Values of Audio Clip 1';'Date: 16-04-2019, Time: 09:59 - 11:59, Audio request code: A5209'});
 xlim([600 800]);
 F = getframe(f8);
 imwrite(F.cdata, 'Plots/G16.png', 'png');
@@ -117,7 +117,7 @@ fclose(fileID);
 
 f9 = figure('Position', get(0, 'Screensize'));
 plot(mean);
-title({'G17: Samples Mean Values of Audio Clip 2';'Date: 13-04-2019, Time: 13:06 - 15:06, Audio request code: A9232'});
+title({'G17: Samples Mean Values of Audio Clip 2';'Date: 16-04-2019, Time: 09:59 - 11:59, Audio request code: A5209'});
 xlim([600 800]);
 F = getframe(f9);
 imwrite(F.cdata, 'Plots/G17.png', 'png');
@@ -128,7 +128,7 @@ fclose(fileID);
 
 f10 = figure('Position', get(0, 'Screensize'));
 plot(step);
-title({'G18: Samples Step Values of Audio Clip 2';'Date: 13-04-2019, Time: 13:06 - 15:06, Audio request code: A9232'});
+title({'G18: Samples Step Values of Audio Clip 2';'Date: 16-04-2019, Time: 09:59 - 11:59, Audio request code: A5209'});
 xlim([600 800]);
 F = getframe(f10);
 imwrite(F.cdata, 'Plots/G18.png', 'png');

@@ -75,7 +75,7 @@ title('Copter Pressure')
 ylabel('Pascal (Pa)')
 xlabel('Time (ms)')
 
-sgtitle({'G19: Ithaki Copter UDP Telemetry ( FLIGHTLEVEL=175 )';'Date: 13-04-2019, Time: 13:06 - 15:06, Ithakicopter code: Q8338'})
+sgtitle({'G19: Ithaki Copter UDP Telemetry ( FLIGHTLEVEL=175 )';'Date: 16-04-2019, Time: 09:59 - 11:59, Ithakicopter code: Q2038'})
 
 F = getframe(f1);
 imwrite(F.cdata, 'Plots/G19.png', 'png');
@@ -115,7 +115,7 @@ title('Copter Pressure')
 ylabel('Pascal (Pa)')
 xlabel('Time (ms)')
 
-sgtitle({'G20: Ithaki Copter UDP Telemetry ( FLIGHTLEVEL=225 )';'Date: 13-04-2019, Time: 13:06 - 15:06, Ithakicopter code: Q8338'})
+sgtitle({'G20: Ithaki Copter UDP Telemetry ( FLIGHTLEVEL=225 )';'Date: 16-04-2019, Time: 09:59 - 11:59, Ithakicopter code: Q2038'})
 
 F = getframe(f2);
 imwrite(F.cdata, 'Plots/G20.png', 'png');

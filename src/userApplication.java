@@ -19,14 +19,14 @@ import javax.sound.sampled.*;
 
 public class userApplication {
 	
-	private static int portNumber			= 8;
+	private static int portNumber			= 11;
 	private static int clientPort 			= 48000 + portNumber;
 	private static int serverPort 			= 38000 + portNumber;
-	private static String echoCode 			= "E3285";
-	private static String imageCode 		= "M7341";
-	private static String soundCode 		= "A9232"; 
-	private static String ithakiCopterCode 	= "Q8338";
-	private static String obdVehicleCode 	= "V4568";
+	private static String echoCode 			= "E3613";
+	private static String imageCode 		= "M7754";
+	private static String soundCode 		= "A5209"; 
+	private static String ithakiCopterCode 	= "Q2038";
+	private static String obdVehicleCode 	= "V6234";
 	private static byte[] hostIP 			= { (byte) 155, (byte) 207, 18, (byte) 208 };
 	private static InetAddress hostAddress;
 	private static Scanner input;
@@ -51,6 +51,7 @@ public class userApplication {
 					+ " | 6. AQDPCM Sound Packet Transmission.                           |\n"
 					+ " | 7. IthakiCopter Telemetry Packet Transmission.                 |\n"
 					+ " | 8. OnBoard Car Fault Diagnostics (OBD-II) Packet Transmission. |\n"
+					+ " | 9. All -- Report Shortcut --                                   |\n"
 					+ " | 0. EXIT PROGRAM                                                |\n"
 					+ " |________________________________________________________________|\n"
 					+ "\n Select one of the available options by pressing the mapped key: " 	);
@@ -209,6 +210,22 @@ public class userApplication {
 					vehicleOBD( );
 					break;
 				}
+				/* 9. All -- Report Shortcut -- */
+				case 9: {
+
+				    echoPacket( 0 );
+				    echoPacket( 1 );
+					echoPacketTemperature( );
+					imageReceive( 0 );
+					imageReceive( 4 );
+					soundDPCM( 0 );
+					soundDPCM( 1 );
+					soundAQDPCM( 1 );
+					soundAQDPCM( 2 );
+					ithakiCopter( );
+					vehicleOBD( );
+					break;
+				}
 				/* 0. EXIT PROGRAM */
 				case 0: {
 					System.out.println(
@@ -222,7 +239,7 @@ public class userApplication {
 				default: System.out.println(
 				  		  " __________________________________________________________________\n"
 						+ " |                                                                |\n"
-						+ " |  Please choose one of the available options [0-7]              |\n"
+						+ " |  Please choose one of the available options [0-9]              |\n"
 						+ " |  ( Type in only the equivalent number )                        |\n"
 				  		+ " |________________________________________________________________|\n" );		
 			
